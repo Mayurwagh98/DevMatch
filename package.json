@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start":"nodemon src/app.js"
+    "start": "nodemon src/app.js"
   },
   "keywords": [
     "nodejs",
@@ -14,7 +14,9 @@
   "author": "MayurWagh",
   "license": "ISC",
   "dependencies": {
+    "dotenv": "^16.4.7",
     "express": "^5.1.0",
+    "mongoose": "^8.13.2",
     "nodemon": "^3.1.9"
   }
 }

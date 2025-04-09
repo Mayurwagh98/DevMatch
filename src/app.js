@@ -1,5 +1,6 @@
 const express = require("express");
-const auth = require("./middlewares/auth");
+const connectDB = require("./config/database")
+require("dotenv").config();;
 
 const app = express();
 
@@ -40,6 +41,13 @@ const app = express();
 //   }
 // );
 
-app.listen(8000, () => {
-  console.log("server is running on port 8000");
-});
+connectDB()
+  .then(() => {
+    console.log("connected to database");
+    app.listen(8000, () => {
+      console.log("server is running on port 8000");
+    });
+  })
+  .catch((err) => {
+    console.log(err);
+  });
