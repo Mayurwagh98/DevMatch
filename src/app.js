@@ -1,4 +1,5 @@
 const express = require("express");
+const auth = require("./middlewares/auth");
 
 const app = express();
 
@@ -17,10 +18,27 @@ const app = express();
 // });
 
 // ------- params ------
-app.post("/mayur/:userId", (req, res) => {
-  console.log(req.params);
-  res.send("Hello Mayur");
-});
+// app.post("/mayur/:userId", (req, res) => {
+//   console.log(req.params);
+//   res.send("Hello Mayur");
+// });
+
+// ------- middleware example -----
+// app.get("/user", auth, (req, res) => {
+//   res.send("Hello User");
+// });
+
+// -------- next & error handling -------
+// app.use(
+//   "/",
+//   (err, req, res, next) => {
+//     console.log("error:", err);
+//     // next();
+//   },
+//   (req, res) => {
+//     res.send("Hello next response");
+//   }
+// );
 
 app.listen(8000, () => {
   console.log("server is running on port 8000");
