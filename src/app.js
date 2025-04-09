@@ -1,45 +1,29 @@
 const express = require("express");
-const connectDB = require("./config/database")
-require("dotenv").config();;
+const connectDB = require("./config/database");
+require("dotenv").config();
+const User = require("./models/User");
 
 const app = express();
 
-// app.use("/", (req, res) => {
-//   res.send("Hello World");
-// });
+app.post("/user", async (req, res) => {
+  const newUser = new User({
+    firstName: "mayur",
+    lastName: "kumar",
+    email: "",
+    lastName: "kumar",
+    email: "EMAIL",
+    password: "123456",
+    age: 22,
+  });
 
-// app.get("/mayur", (req, res) => {
-//   res.send("Hello Mayur");
-// });
-
-// ------- query ------
-// app.post("/mayur", (req, res) => {
-//   console.log(req.query);
-//   res.send("Hello Mayur");
-// });
-
-// ------- params ------
-// app.post("/mayur/:userId", (req, res) => {
-//   console.log(req.params);
-//   res.send("Hello Mayur");
-// });
-
-// ------- middleware example -----
-// app.get("/user", auth, (req, res) => {
-//   res.send("Hello User");
-// });
-
-// -------- next & error handling -------
-// app.use(
-//   "/",
-//   (err, req, res, next) => {
-//     console.log("error:", err);
-//     // next();
-//   },
-//   (req, res) => {
-//     res.send("Hello next response");
-//   }
-// );
+  try {
+    await newUser.save();
+    return res.status(200).json("user created");
+  } catch (error) {
+    console.log("error:", error);
+    return res.status(500).json({ message: "Internal server error" });
+  }
+});
 
 connectDB()
   .then(() => {
