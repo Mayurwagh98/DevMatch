@@ -7,6 +7,7 @@ const app = express();
 
 app.use(express.json());
 
+// ----- get single user -----
 app.post("/user", async (req, res) => {
   const userDetails = req.body;
   const newUser = new User(userDetails);
@@ -20,6 +21,7 @@ app.post("/user", async (req, res) => {
   }
 });
 
+// ----- get all users -----
 app.get("/allUsers", async (req, res) => {
   try {
     const users = await User.find({});
@@ -30,6 +32,7 @@ app.get("/allUsers", async (req, res) => {
   }
 });
 
+// ----- get single user by email -----
 app.get("/userByEmail", async (req, res) => {
   try {
     const email = req.body.email;
@@ -46,6 +49,7 @@ app.get("/userByEmail", async (req, res) => {
   }
 });
 
+// ----- get single user by id -----
 app.get("/userById", async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -60,6 +64,7 @@ app.get("/userById", async (req, res) => {
   }
 });
 
+// ----- delete user by id -----
 app.delete("/deleteUser", async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -72,6 +77,7 @@ app.delete("/deleteUser", async (req, res) => {
   }
 });
 
+// ----- update user by id -----
 app.patch("/updateUser", async (req, res) => {
   try {
     const userId = req.body.userId;
@@ -87,6 +93,7 @@ app.patch("/updateUser", async (req, res) => {
   }
 });
 
+// ----- update user by email -----
 app.patch("/updateUserByEmail", async (req, res) => {
   try {
     const email = req.body.email;
