@@ -34,7 +34,7 @@ app.get("/userByEmail", async (req, res) => {
   try {
     const email = req.body.email;
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     if (!user) {
       return res.status(404).json("user not found");
@@ -43,6 +43,20 @@ app.get("/userByEmail", async (req, res) => {
     return res.status(200).json(user);
   } catch (error) {
     return res.status(500).json("Something went wrong");
+  }
+});
+
+app.get("/userById", async (req, res) => {
+  try {
+    const userId = req.body.userId;
+
+    const user = await User.findById(userId);
+
+    if (!user) return res.status(404).json("user not found");
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json("something went wrong");
   }
 });
 
