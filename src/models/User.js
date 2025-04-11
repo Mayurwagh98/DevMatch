@@ -41,6 +41,14 @@ const User = new mongoose.Schema({
   skills: {
     type: [String],
   },
+  gender: {
+    type: String,
+    validate(value) {
+      if (!["male", "female", "other"].includes(value)) {
+        throw new Error("Invalid Gender");
+      }
+    },
+  },
 });
 
 const UserModel = mongoose.model("Users", User);
