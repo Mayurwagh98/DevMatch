@@ -78,18 +78,26 @@ app.delete("/deleteUser", async (req, res) => {
 });
 
 // ----- update user by id -----
-app.patch("/updateUser", async (req, res) => {
+app.patch("/updateUser/:userId", async (req, res) => {
   try {
-    const userId = req.body.userId;
+    const userId = req.params.userId;
     const updates = req.body;
-    console.log("updates:", updates);
+
+    const ALLOWED_UPDATES = ["firstName", "photoUlr", "lastName", "age"];
+
+    const isValidUpdate = Object.keys(updates).every((update) =>
+      ALLOWED_UPDATES.includes(update)
+    );
+
+    if (!isValidUpdate) return res.status(400).send("Invalid update");
+
     const user = await User.findByIdAndUpdate(userId, updates, {
       new: true,
     });
     if (!user) return res.status(404).json("user not found");
     return res.status(200).json(user);
   } catch (error) {
-    return res.status(500).json("something went wrong");
+    return res.status(500).json("something went wrong:" + error.message);
   }
 });
 
