@@ -50,4 +50,9 @@ const login = async (req, res) => {
   }
 };
 
-module.exports = { signup, login };
+const logout = async (req, res) => {
+  res.cookie("token", null, { expires: new Date(Date.now()) });
+  res.status(200).send("logout successful");
+};
+
+module.exports = { signup, login, logout };
