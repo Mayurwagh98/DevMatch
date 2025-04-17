@@ -3,10 +3,15 @@ const connectDB = require("./config/database");
 require("dotenv").config();
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
+const userAuth = require("./middlewares/auth");
+const jwt = require("jsonwebtoken");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
 app.use(express.json());
+
+app.use(cookieParser());
 
 // ----- get single user -----
 app.post("/user", async (req, res) => {
@@ -155,11 +160,30 @@ app.post("/login", async (req, res) => {
   try {
     const isPasswordValid = await bcrypt.compare(password, user.password);
 
-    if (!isPasswordValid) return res.status(400).send("invalid credentials");
+    if (!isPasswordValid) {
+      return res.status(400).send("invalid credentials");
+    }
+
+    const token = await user.getJWT();
+
+    res.cookie("token", token, {
+      expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+    });
 
     res.status(200).send("login successful");
   } catch (error) {
     res.status(500).send(error.message);
+  }
+});
+
+app.post("/sendConnectionReq", userAuth, async (req, res) => {
+  try {
+    const user = req.user;
+    console.log("user:", user);
+
+    res.send("connection request sent by " + user.firstName);
+  } catch (error) {
+    return res.status(500).send("something went wrong");
   }
 });
 
