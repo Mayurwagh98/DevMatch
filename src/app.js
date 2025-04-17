@@ -5,6 +5,7 @@ const User = require("./models/User");
 const userAuth = require("./middlewares/auth");
 const cookieParser = require("cookie-parser");
 const authRouter = require("./routes/auth.router");
+const profileRouter = require("./routes/profile.router");
 
 const app = express();
 
@@ -13,6 +14,7 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/", authRouter);
+app.use("/", profileRouter);
 
 // ----- get single user -----
 app.post("/user", async (req, res) => {
@@ -36,23 +38,6 @@ app.get("/allUsers", async (req, res) => {
   } catch (error) {
     console.log("error:", error);
     return res.status(500).json({ message: "Internal server error" });
-  }
-});
-
-// ----- get single user by email -----
-app.get("/userByEmail", async (req, res) => {
-  try {
-    const email = req.body.email;
-
-    const user = await User.findOne({ email });
-
-    if (!user) {
-      return res.status(404).json("user not found");
-    }
-
-    return res.status(200).json(user);
-  } catch (error) {
-    return res.status(500).json("Something went wrong");
   }
 });
 

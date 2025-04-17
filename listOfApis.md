@@ -4,7 +4,7 @@
 - [POST] /auth/login
 - [POST] /auth/logout
 
-## Product routes
+## Profile routes
 
 - [GET] /profile/view
 - [POST] /profile/edit
