@@ -1,8 +1,10 @@
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
+const { validateSignUpData } = require("../utils/validations");
 
 const signup = async (req, res) => {
   try {
+    validateSignUpData(req);
     const { password, email } = req.body;
 
     const user = await User.findOne({ email });
@@ -16,12 +18,12 @@ const signup = async (req, res) => {
 
       await newUser.save();
 
-      res.status(201).send("user created");
+      res.status(201).json({ message: "user created", newUser });
     } catch (error) {
       res.status(500).send(error.message);
     }
   } catch (error) {
-    return res.status(500).json({ message: "Internal server error" });
+    return res.status(500).json({ message: error.message });
   }
 };
 
