@@ -8,15 +8,12 @@
 
 - [GET] /profile/view
 - [POST] /profile/edit
+- [DELETE] /user/delete/:userId
 
 ## Request routes
 
 -[POST] /request/send/:userId
 
-## User routes
-
-- [GET] /user/view/:userId 
-- [DELETE] /user/delete/:userId
 
 ## Feed routes
 -[GET] /feed/view

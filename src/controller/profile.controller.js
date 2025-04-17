@@ -1,4 +1,5 @@
 const { validateEditProfileData } = require("../utils/validations");
+const User = require("../models/User");
 
 const userProfile = async (req, res) => {
   try {
@@ -30,4 +31,16 @@ const updateProfile = async (req, res) => {
   }
 };
 
-module.exports = { userProfile, updateProfile };
+const deleteProfile = async (req, res) => {
+  try {
+    const user = req.user;
+
+    await User.findByIdAndDelete(user._id);
+
+    res.status(200).json("user deleted");
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+};
+
+module.exports = { userProfile, updateProfile, deleteProfile };
