@@ -4,7 +4,6 @@ require("dotenv").config();
 const User = require("./models/User");
 const bcrypt = require("bcrypt");
 const userAuth = require("./middlewares/auth");
-const jwt = require("jsonwebtoken");
 const cookieParser = require("cookie-parser");
 
 const app = express();
@@ -158,7 +157,7 @@ app.post("/login", async (req, res) => {
 
   if (!user) return res.status(400).send("user not found");
   try {
-    const isPasswordValid = await bcrypt.compare(password, user.password);
+    const isPasswordValid = await user.validatePassword(password); // method defined in User.j
 
     if (!isPasswordValid) {
       return res.status(400).send("invalid credentials");
