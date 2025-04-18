@@ -11,6 +11,7 @@ const connectionRequestSchema = new Schema(
     receiverUserId: {
       type: Schema.Types.ObjectId,
       required: true,
+      ref: "Users",
     },
     status: {
       type: String,
