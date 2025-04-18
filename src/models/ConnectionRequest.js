@@ -24,6 +24,8 @@ const connectionRequestSchema = new Schema(
   }
 );
 
+connectionRequestSchema.index({ senderUserId: 1, receiverUserId: 1 });
+
 connectionRequestSchema.pre("save", function (next) {
   const connectionRequest = this;
 
