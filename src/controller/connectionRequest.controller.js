@@ -7,6 +7,14 @@ const connectionRequest = async (req, res) => {
     const receiverUserId = req.params.receiverUserId;
     const status = req.params.status;
 
+    const ALLOWED_STATUSES = ["interested", "rejected"];
+
+    const isStatusValid = ALLOWED_STATUSES.includes(status);
+
+    if (!isStatusValid) {
+      throw new Error("Invalid status selected");
+    }
+
     const receiverUser = await User.findById(receiverUserId);
     if (!receiverUser) {
       return res.status(404).json({ message: "Receiver user not found" });
