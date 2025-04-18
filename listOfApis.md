@@ -12,7 +12,8 @@
 
 ## Request routes
 
--[POST] /request/send/:status/:receiverUserId
+- [POST] /request/send/:status/:receiverUserId
+- [POST] /request/review/:status/:requestId
 
 ## Feed routes
 

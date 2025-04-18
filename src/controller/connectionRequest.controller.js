@@ -47,4 +47,40 @@ const connectionRequest = async (req, res) => {
   }
 };
 
-module.exports = { connectionRequest };
+const requestReview = async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    const { requestId, status } = req.params;
+
+    const ALLOWED_STATUSES = ["accepted", "rejected"];
+
+    const isStatusValid = ALLOWED_STATUSES.includes(status);
+    if (!isStatusValid) {
+      throw new Error("Invalid status selected");
+    }
+
+    const connectionRequest = await ConnectionRequest.findOne({
+      _id: requestId,
+      receiverUserId: loggedInUser._id,
+      status: "interested",
+    }).populate("senderUserId", "firstName lastName profilePhoto");
+
+    if (!connectionRequest) {
+      return res.status(404).json({ message: "Connection request not found" });
+    }
+
+    connectionRequest.status = status;
+    const accpetedRequest = await connectionRequest.save();
+
+    return res
+      .status(200)
+      .json({
+        message: `Connection request ${status} by ${loggedInUser.firstName} ${loggedInUser.lastName}`,
+        accpetedRequest,
+      });
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
+module.exports = { connectionRequest, requestReview };
