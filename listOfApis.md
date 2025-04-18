@@ -12,8 +12,8 @@
 
 ## Request routes
 
--[POST] /request/send/:userId
-
+-[POST] /request/send/:status/:receiverUserId
 
 ## Feed routes
+
 -[GET] /feed/view
