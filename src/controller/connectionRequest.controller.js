@@ -20,6 +20,17 @@ const connectionRequest = async (req, res) => {
       return res.status(404).json({ message: "Receiver user not found" });
     }
 
+    const existingRequest = await ConnectionRequest.findOne({
+      $or: [
+        { senderUserId, receiverUserId },
+        { senderUserId: receiverUserId, receiverUserId: senderUserId },
+      ],
+    });
+
+    if (existingRequest) {
+      throw new Error("Request already sent");
+    }
+
     const newConnectionRequest = new ConnectionRequest({
       senderUserId,
       receiverUserId,
