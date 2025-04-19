@@ -57,8 +57,7 @@ const getMyFeed = async (req, res) => {
     // adding limit to 20 to avoid unnecessary queries to the database, so user
     // can't manipulate the limit to a large number
     limit = limit > 20 ? 20 : limit;
-    const page = req.query.page || 1;
-    page = parseInt(page);
+    const page = parseInt(req.query.page) || 1;
     const skip = (page - 1) * limit;
 
     // ------> conditions to check <-------
