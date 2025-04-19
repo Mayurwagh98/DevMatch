@@ -1,12 +1,13 @@
-const User = require("./models/User");
+const User = require("../models/User");
+const jwt = require("jsonwebtoken");
 
-const auth = async (req, res, next) => {
+const userAuth = async (req, res, next) => {
   try {
     const { token } = req.cookies;
 
     if (!token) return res.status(401).json("no token provided");
 
-    const decodedToken = await isJWT.verify(token, "Mayur");
+    const decodedToken = await jwt.verify(token, process.env.JWT_SECRET);
 
     const { _id } = decodedToken;
     const user = await User.findById(_id);
@@ -19,4 +20,4 @@ const auth = async (req, res, next) => {
   }
 };
 
-module.exports = auth;
+module.exports = userAuth;
