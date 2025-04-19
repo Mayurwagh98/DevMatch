@@ -16,7 +16,6 @@
 - [POST] /request/review/:status/:requestId
 
 ## User routes
-- [GEt] /user/requests/received
+- [GET] /user/requests/received
 - [GET] /user/my_connections
-
--[GET] /feed/view
+- [GET] /feed
