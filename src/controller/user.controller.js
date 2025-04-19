@@ -1,4 +1,5 @@
 const ConnectionRequest = require("../models/ConnectionRequest");
+const User = require("../models/User");
 
 const USER_SAFE_DATA = "firstName lastName photoUrl age gender about skills";
 
@@ -48,4 +49,48 @@ const getMyConnections = async (req, res) => {
   }
 };
 
-module.exports = { requestesReceived, getMyConnections };
+const getMyFeed = async (req, res) => {
+  try {
+    const loggedInUser = req.user;
+    let limit = req.query.limit || 10;
+    limit = parseInt(limit);
+    const page = req.query.page || 1;
+    page = parseInt(page);
+    limit = limit > 20 ? 20 : limit;
+    const skip = (page - 1) * limit;
+
+    // 1. logged in user should not see his/her own card
+    // 2. logged in user should not see cards who are already connected
+    // 3. logged in user should not see cards who have sent him/her a connection request
+
+    const connectionRequest = await ConnectionRequest.find({
+      $or: [
+        { senderUserId: loggedInUser._id },
+        { receiverUserId: loggedInUser._id },
+      ],
+    });
+
+    const hideUsersFromFeed = new Set();
+
+    connectionRequest.forEach((row) => {
+      hideUsersFromFeed.add(row.senderUserId.toString());
+      hideUsersFromFeed.add(row.receiverUserId.toString());
+    });
+
+    const users = await User.find({
+      $and: [
+        { _id: { $nin: Array.from(hideUsersFromFeed) } },
+        { _id: { $ne: loggedInUser._id } },
+      ],
+    })
+      .select(USER_SAFE_DATA)
+      .skip(skip)
+      .limit(limit);
+
+    res.status(200).send(users);
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+};
+
+module.exports = { requestesReceived, getMyConnections, getMyFeed };
