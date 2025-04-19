@@ -52,8 +52,7 @@ const getMyConnections = async (req, res) => {
 const getMyFeed = async (req, res) => {
   try {
     const loggedInUser = req.user;
-    let limit = req.query.limit || 10;
-    limit = parseInt(limit);
+    let limit = parseInt(req.query.limit) || 10;
     // adding limit to 20 to avoid unnecessary queries to the database, so user
     // can't manipulate the limit to a large number
     limit = limit > 20 ? 20 : limit;
