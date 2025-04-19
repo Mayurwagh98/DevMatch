@@ -59,6 +59,7 @@ const getMyFeed = async (req, res) => {
     limit = limit > 20 ? 20 : limit;
     const skip = (page - 1) * limit;
 
+    // ------> conditions to check <-------
     // 1. logged in user should not see his/her own card
     // 2. logged in user should not see cards who are already connected
     // 3. logged in user should not see cards who have sent him/her a connection request
