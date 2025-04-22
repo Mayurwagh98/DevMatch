@@ -46,7 +46,7 @@ const login = async (req, res) => {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     });
 
-    res.status(200).send("login successful");
+    res.status(200).send(user);
   } catch (error) {
     res.status(500).send(error.message);
   }
