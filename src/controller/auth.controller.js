@@ -45,8 +45,13 @@ const login = async (req, res) => {
     res.cookie("token", token, {
       expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
     });
+    // Sanitize user object before sending
+    const sanitizedUser = user.toObject(); // Convert Mongoose doc to plain JS object
+    delete sanitizedUser.password;
+    delete sanitizedUser.createdAt;
+    delete sanitizedUser.updatedAt;
 
-    res.status(200).send("login successful");
+    res.status(200).json({ success: true, sanitizedUser });
   } catch (error) {
     res.status(500).send(error.message);
   }
