@@ -52,6 +52,9 @@ const User = new mongoose.Schema(
         }
       },
     },
+    about: {
+      type: String,
+    },
   },
   { timestamps: true }
 );
