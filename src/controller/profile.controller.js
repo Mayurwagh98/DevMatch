@@ -25,7 +25,13 @@ const updateProfile = async (req, res) => {
 
     await loggedInUser.save();
 
-    res.status(200).json({ success: true, loggedInUser });
+    res
+      .status(200)
+      .json({
+        success: true,
+        loggedInUser,
+        message: "Profile Updated Succesfully!",
+      });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
