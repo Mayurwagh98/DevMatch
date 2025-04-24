@@ -10,7 +10,10 @@ const requestesReceived = async (req, res) => {
     const receivedRequests = await ConnectionRequest.find({
       receiverUserId: loggedInUser._id,
       status: "interested",
-    }).populate("senderUserId", USER_SAFE_DATA);
+    })
+      .select("-createdAt -updatedAt -__v")
+      .populate("senderUserId", USER_SAFE_DATA);
+
     return res.status(200).send(receivedRequests);
   } catch (error) {
     return res.status(500).send("something went wrong");
