@@ -7,7 +7,7 @@ const connectionRequest = async (req, res) => {
     const receiverUserId = req.params.receiverUserId;
     const status = req.params.status;
 
-    const ALLOWED_STATUSES = ["interested", "rejected"];
+    const ALLOWED_STATUSES = ["interested", "ignored"];
 
     const isStatusValid = ALLOWED_STATUSES.includes(status);
 
