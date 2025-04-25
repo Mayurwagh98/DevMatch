@@ -18,7 +18,13 @@ const signup = async (req, res) => {
 
       await newUser.save();
 
-      res.status(201).json({ message: "user created", newUser });
+      const token = await newUser.getJWT();
+
+      res.cookie("token", token, {
+        expires: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7),
+      });
+
+      res.status(201).json({ success: true, message: "user created", newUser });
     } catch (error) {
       res.status(500).send(error.message);
     }
