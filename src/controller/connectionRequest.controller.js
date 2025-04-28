@@ -38,8 +38,8 @@ const connectionRequest = async (req, res) => {
       status,
     });
 
-    const emailRes = await sendEmail.run("A new friend request from mayur");
-    console.log(emailRes);
+    // const emailRes = await sendEmail.run("A new friend request from mayur");
+    // console.log(emailRes);
     await newConnectionRequest.save();
     return res.status(201).json({
       message: `${req.user.firstName} sent request to ${receiverUser.firstName}`,
