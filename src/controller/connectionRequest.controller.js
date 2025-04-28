@@ -1,5 +1,6 @@
 const ConnectionRequest = require("../models/ConnectionRequest");
 const User = require("../models/User");
+const sendEmail = require("../utils/sendEmail");
 
 const connectionRequest = async (req, res) => {
   try {
@@ -37,6 +38,8 @@ const connectionRequest = async (req, res) => {
       status,
     });
 
+    const emailRes = await sendEmail.run("A new friend request from mayur");
+    console.log(emailRes);
     await newConnectionRequest.save();
     return res.status(201).json({
       message: `${req.user.firstName} sent request to ${receiverUser.firstName}`,
@@ -72,12 +75,10 @@ const requestReview = async (req, res) => {
     connectionRequest.status = status;
     const accpetedRequest = await connectionRequest.save();
 
-    return res
-      .status(200)
-      .json({
-        message: `Connection request ${status} by ${loggedInUser.firstName} ${loggedInUser.lastName}`,
-        accpetedRequest,
-      });
+    return res.status(200).json({
+      message: `Connection request ${status} by ${loggedInUser.firstName} ${loggedInUser.lastName}`,
+      accpetedRequest,
+    });
   } catch (error) {
     return res.status(500).send(error.message);
   }
