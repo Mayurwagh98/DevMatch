@@ -34,6 +34,7 @@ const initializeSocket = (server) => {
         userId,
         receiverId,
         message,
+        createdAt,
       }) => {
         try {
           const roomId = getSecretRoomId(userId, receiverId);
@@ -63,6 +64,7 @@ const initializeSocket = (server) => {
             lastName,
             photoUrl,
             message,
+            createdAt,
           });
         } catch (error) {
           console.log("error:", error);

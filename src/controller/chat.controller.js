@@ -7,7 +7,7 @@ const chat = async (req, res) => {
 
     let chatExists = await Chat.findOne({
       members: { $all: [userId, receiverId] },
-    }).populate("messages.sender", "firstName lastName photoUrl");
+    }).populate("messages.sender", "firstName lastName photoUrl createdAt");
 
     if (!chatExists) {
       chatExists = new Chat({
