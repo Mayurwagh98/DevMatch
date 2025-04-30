@@ -16,12 +16,21 @@ const initializeSocket = (server) => {
   });
 
   io.on("connection", (socket) => {
+    // create chat room
     socket.on("joinChat", ({ firstName, userId, receiverId }) => {
       const roomId = getSecretRoomId(userId, receiverId);
       console.log(firstName + "joined room" + roomId);
       socket.join(roomId);
     });
-    socket.on("sendMessage", () => {});
+
+    // send message to room
+    socket.on("sendMessage", ({ firstName, userId, receiverId, message }) => {
+      const roomId = getSecretRoomId(userId, receiverId);
+      console.log(firstName + "sent message" + message);
+
+      // send message to room
+      io.to(roomId).emit("messageReceived", { firstName, message });
+    });
     socket.on("disconnect", () => {});
   });
 };
