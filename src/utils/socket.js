@@ -27,7 +27,14 @@ const initializeSocket = (server) => {
     // send message to room
     socket.on(
       "sendMessage",
-      async ({ firstName, userId, receiverId, message }) => {
+      async ({
+        firstName,
+        lastName,
+        photoUrl,
+        userId,
+        receiverId,
+        message,
+      }) => {
         try {
           const roomId = getSecretRoomId(userId, receiverId);
           console.log(firstName + "sent message" + message);
@@ -51,7 +58,12 @@ const initializeSocket = (server) => {
           await chatExists.save();
 
           // send message to room
-          io.to(roomId).emit("messageReceived", { firstName, message });
+          io.to(roomId).emit("messageReceived", {
+            firstName,
+            lastName,
+            photoUrl,
+            message,
+          });
         } catch (error) {
           console.log("error:", error);
           return error;
