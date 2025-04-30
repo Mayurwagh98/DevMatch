@@ -7,6 +7,8 @@ const profileRouter = require("./routes/profile.router");
 const connectionRequestRouter = require("./routes/connectionRequest.router");
 const requestesReceived = require("./routes/user.router");
 const cors = require("cors");
+const http = require("http");
+const initializeSocket = require("./utils/socket");
 
 const app = express();
 
@@ -26,10 +28,13 @@ app.use("/", profileRouter);
 app.use("/", connectionRequestRouter);
 app.use("/", requestesReceived);
 
+const server = http.createServer(app);
+initializeSocket(server);
+
 connectDB()
   .then(() => {
     console.log("connected to database");
-    app.listen(8000, () => {
+    server.listen(8000, () => {
       console.log("server is running on port 8000");
     });
   })
